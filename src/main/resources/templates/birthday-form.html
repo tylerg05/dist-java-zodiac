@@ -32,7 +32,7 @@
             <br/>
             <select th:field="*{month}" id="month">
                 <option th:each="m : ${monthList}"
-                        th:value="${mStat.index + 1}"
+                        th:value="${mStat.count}"
                         th:text="${m.name}">
                 </option>
             </select>
@@ -45,18 +45,18 @@
             </label>
             <br/>
             <input type="number" min="1900" max="2100"
-                   id="year" th:field="${birthday.year}">
+                   id="year" th:field="*{year}">
 
             <br/>
 
             <!-- Zodiac types -->
-            <input type="radio" id="z-eastern" name="zodiac"
+            <input type="radio" id="z-eastern"
                    value="Eastern" th:field="*{zodiacType}">
             <label for="z-eastern">
                 Eastern Zodiac
             </label>
             <br/>
-            <input type="radio" id="z-western" name="zodiac"
+            <input type="radio" id="z-western"
                    value="Western" th:field="*{zodiacType}">
             <label for="z-western">
                 Western Zodiac

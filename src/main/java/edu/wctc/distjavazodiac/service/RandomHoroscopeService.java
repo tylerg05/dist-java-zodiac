@@ -15,8 +15,8 @@ Random horoscopes from https://cafeastrology.com/dailyhoroscopesall-tomorrow.htm
  */
 @Service
 public class RandomHoroscopeService implements HoroscopeService {
-    private ZodiacService zodiacService;
     private String[] allHoroscopes;
+    private ZodiacService zodiacService;
 
     @Autowired
     public RandomHoroscopeService(ZodiacService zodiacService) {

@@ -18,11 +18,15 @@ public class HoroscopeController {
     @Autowired
     private HoroscopeService horoscopeService;
 
+    @PostMapping("/get-horoscope")
+    public String processForm(@ModelAttribute Birthday bday,
+                              Model model) {
+//        Object o = model.getAttribute("birthday");
+//        Birthday bday = (Birthday) o;
+        model.addAttribute("pageTitle", "Know Your Fate");
+        model.addAttribute("hs", horoscopeService.getHoroscope(bday));
 
-    @RequestMapping("/")
-    public String showHomePage(Model model) {
-        model.addAttribute("pageTitle", "Mystic Oracle Horoscopes");
-        return "index";
+        return "horoscope";
     }
 
     @GetMapping("/enter-birthday")
@@ -39,12 +43,9 @@ public class HoroscopeController {
         return "birthday-form";
     }
 
-    @PostMapping("/get-horoscope")
-    public String processForm(@ModelAttribute Birthday bday,
-                              Model model) {
-        model.addAttribute("pageTitle", "Know Your Fate");
-        model.addAttribute("hs", horoscopeService.getHoroscope(bday));
-
-        return "horoscope";
+    @RequestMapping("/")
+    public String showHomePage(Model model) {
+        model.addAttribute("pageTitle", "Mystic Oracle Horoscopes");
+        return "index";
     }
 }
