@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class JsonMonthListService implements MonthListService {
+public class BasicMonthListService implements MonthListService {
     private List<Month> monthList;
 
     @Override
