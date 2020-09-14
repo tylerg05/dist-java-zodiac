@@ -2,6 +2,7 @@ package edu.wctc.distjavazodiac.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wctc.distjavazodiac.entity.Birthday;
+import edu.wctc.distjavazodiac.entity.Fortune;
 import edu.wctc.distjavazodiac.entity.Horoscope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,31 +10,21 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 /*
 Random horoscopes from https://cafeastrology.com/dailyhoroscopesall-tomorrow.html
  */
 @Service
 public class RandomHoroscopeService implements HoroscopeService {
-    private String[] allHoroscopes;
+    private List<Fortune> allFortunes;
     private ZodiacService zodiacService;
 
     @Autowired
     public RandomHoroscopeService(ZodiacService zodiacService) {
         this.zodiacService = zodiacService;
     }
-
-    @PostConstruct
-    public void initHoroscopes() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            allHoroscopes = mapper.readValue(Paths.get("horoscopes.json").toFile(), String[].class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            allHoroscopes = new String[]{"Today will not be good for reading JSON files"};
-        }
-    }
-
 
     @Override
     public Horoscope getHoroscope(Birthday birthday) {
@@ -47,8 +38,22 @@ public class RandomHoroscopeService implements HoroscopeService {
         Horoscope hscope = new Horoscope();
         hscope.setSign(sign);
 
-        int randomIndex = (int)(Math.random() * allHoroscopes.length);
-        hscope.setHoroscope(allHoroscopes[randomIndex]);
+        int randomIndex = (int) (Math.random() * allFortunes.size());
+        hscope.setHoroscope(allFortunes.get(randomIndex).getText());
         return hscope;
+    }
+
+    @PostConstruct
+    public void initHoroscopes() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        Fortune[] fortuneArray;
+        try {
+            fortuneArray = mapper.readValue(Paths.get("fortunes.json").toFile(), Fortune[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            fortuneArray = new Fortune[]{new Fortune()};
+        }
+        allFortunes = Arrays.asList(fortuneArray);
     }
 }
