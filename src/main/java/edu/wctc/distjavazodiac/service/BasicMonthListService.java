@@ -2,6 +2,8 @@ package edu.wctc.distjavazodiac.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wctc.distjavazodiac.entity.Month;
+import edu.wctc.distjavazodiac.repo.MonthRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -13,13 +15,17 @@ import java.util.List;
 
 @Service
 public class BasicMonthListService implements MonthListService {
-    private List<Month> monthList;
+
+    @Autowired
+    private MonthRepository monthRepository;
+
+    //private List<Month> monthList;
 
     @Override
     public List<Month> getMonths() {
-        return monthList;
+        return new ArrayList<>(monthRepository.findAllByNumberNotNull());
     }
-
+    /*
     @PostConstruct
     public void initMonths() {
         ObjectMapper mapper = new ObjectMapper();
@@ -31,4 +37,5 @@ public class BasicMonthListService implements MonthListService {
             monthList = new ArrayList<>(0);
         }
     }
+    */
 }

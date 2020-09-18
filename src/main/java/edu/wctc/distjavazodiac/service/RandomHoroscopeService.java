@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wctc.distjavazodiac.entity.Birthday;
 import edu.wctc.distjavazodiac.entity.Fortune;
 import edu.wctc.distjavazodiac.entity.Horoscope;
+import edu.wctc.distjavazodiac.repo.FortuneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,10 @@ Random horoscopes from https://cafeastrology.com/dailyhoroscopesall-tomorrow.htm
  */
 @Service
 public class RandomHoroscopeService implements HoroscopeService {
-    private List<Fortune> allFortunes;
+    @Autowired
+    private FortuneRepository fortuneRepository;
+
+    //private List<Fortune> allFortunes;
     private ZodiacService zodiacService;
 
     @Autowired
@@ -38,11 +42,11 @@ public class RandomHoroscopeService implements HoroscopeService {
         Horoscope hscope = new Horoscope();
         hscope.setSign(sign);
 
-        int randomIndex = (int) (Math.random() * allFortunes.size());
-        hscope.setHoroscope(allFortunes.get(randomIndex).getText());
+        int randomIndex = (int) (Math.random() * fortuneRepository.count());
+        hscope.setHoroscope(fortuneRepository.findById(randomIndex).getText());
         return hscope;
     }
-
+/*
     @PostConstruct
     public void initHoroscopes() {
         ObjectMapper mapper = new ObjectMapper();
@@ -56,4 +60,5 @@ public class RandomHoroscopeService implements HoroscopeService {
         }
         allFortunes = Arrays.asList(fortuneArray);
     }
+    */
 }
